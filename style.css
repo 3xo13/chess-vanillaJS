@@ -1,0 +1,39 @@
+body{
+    padding: 0;
+    margin: 0;
+}
+#container{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgb(95, 94, 94);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#board{
+    padding: 3px;
+    width: 90vh;
+    height: 90vh;
+    background-color: wheat;
+    display: grid;
+    grid-template-rows: repeat(8,1fr);
+    grid-template-columns: repeat(8,1fr);
+    gap: 3px 3px;
+}
+.square{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.piece{
+    width: 45px;
+}
+.marked-empty{
+    border: 5px dashed gold;
+}
+.marked{
+    border: 5px dashed green ;
+}
+.marked-enemy{
+    border: 5px dashed red;
+}
