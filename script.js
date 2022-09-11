@@ -142,26 +142,60 @@ const setPieces = (row, color, index, pieceIndex, className) => {
     img.setAttribute('class', `piece ${className} ${color}`)
     row[index].append(img)
 }
-setPieces(arr[0], 'black', 3, 0, 'king');
-setPieces(arr[7], 'white', 3, 0, 'king');
 
-setPieces(arr[0], 'black', 4, 2, 'queen');
-setPieces(arr[7], 'white', 4, 2, 'queen');
-
-setPieces(arr[0], 'black', 5, 4, 'pishop');
-setPieces(arr[0], 'black', 2, 4, 'pishop');
-setPieces(arr[7], 'white', 5, 4, 'pishop');
-setPieces(arr[7], 'white', 2, 4, 'pishop');
-
-setPieces(arr[0], 'black', 6, 6, 'knight');
-setPieces(arr[0], 'black', 1, 6, 'knight');
-setPieces(arr[7], 'white', 6, 6, 'knight');
-setPieces(arr[7], 'white', 1, 6, 'knight');
-
-setPieces(arr[0], 'black', 7, 8, 'rook');
-setPieces(arr[0], 'black', 0, 8, 'rook');
-setPieces(arr[7], 'white', 7, 8, 'rook');
-setPieces(arr[7], 'white', 0, 8, 'rook');
+const firstBoard = [
+    [
+        arr[0], 'black', 3, 0, 'king'
+    ],
+    [
+        arr[7], 'white', 3, 0, 'king'
+    ],
+    [
+        arr[0], 'black', 4, 2, 'queen'
+    ],
+    [
+        arr[7], 'white', 4, 2, 'queen'
+    ],
+    [
+        arr[0], 'black', 5, 4, 'pishop'
+    ],
+    [
+        arr[0], 'black', 2, 4, 'pishop'
+    ],
+    [
+        arr[7], 'white', 5, 4, 'pishop'
+    ],
+    [
+        arr[7], 'white', 2, 4, 'pishop'
+    ],
+    [
+        arr[0], 'black', 6, 6, 'knight'
+    ],
+    [
+        arr[0], 'black', 1, 6, 'knight'
+    ],
+    [
+        arr[7], 'white', 6, 6, 'knight'
+    ],
+    [
+        arr[7], 'white', 1, 6, 'knight'
+    ],
+    [
+        arr[0], 'black', 7, 8, 'rook'
+    ],
+    [
+        arr[0], 'black', 0, 8, 'rook'
+    ],
+    [
+        arr[7], 'white', 7, 8, 'rook'
+    ],
+    [
+        arr[7], 'white', 0, 8, 'rook'
+    ]
+]
+firstBoard.forEach(el => {
+    setPieces(el[0], el[1], el[2], el[3], el[4])
+})
 
 board.addEventListener('click', (e) => {
 
@@ -208,12 +242,18 @@ const pawnsMove = (e, arr, color) => {
                                     .add("marked-empty")
                             }
                             //console.log(arr[i+1][x+1].classList[2])
-                            if (arr[i + 1][x + 1].firstChild && arr[i + 1][x + 1].firstChild.classList[2] === 'white') {
+                            if (
+                                arr[i + 1][x + 1]
+                                    ?.firstChild && arr[i + 1][x + 1].firstChild.classList[2] === 'white'
+                            ) {
                                 arr[i + 1][x + 1]
                                     .classList
                                     .add("marked-enemy")
                             }
-                            if (arr[i + 1][x - 1].firstChild && arr[i + 1][x - 1].firstChild.classList[2] === 'white') {
+                            if (
+                                arr[i + 1][x - 1]
+                                    ?.firstChild && arr[i + 1][x - 1].firstChild.classList[2] === 'white'
+                            ) {
                                 arr[i + 1][x - 1]
                                     .classList
                                     .add("marked-enemy")
@@ -230,12 +270,18 @@ const pawnsMove = (e, arr, color) => {
                                     .classList
                                     .add("marked-empty")
                             }
-                            if (arr[i + 1][x + 1].firstChild && arr[i + 1][x + 1].firstChild.classList[2] === 'white') {
+                            if (
+                                arr[i + 1][x + 1]
+                                    ?.firstChild && arr[i + 1][x + 1].firstChild.classList[2] === 'white'
+                            ) {
                                 arr[i + 1][x + 1]
                                     .classList
                                     .add("marked-enemy")
                             }
-                            if (arr[i + 1][x - 1].firstChild && arr[i + 1][x - 1].firstChild.classList[2] === 'white') {
+                            if (
+                                arr[i + 1][x - 1]
+                                    ?.firstChild && arr[i + 1][x - 1].firstChild.classList[2] === 'white'
+                            ) {
                                 arr[i + 1][x - 1]
                                     .classList
                                     .add("marked-enemy")
@@ -244,8 +290,7 @@ const pawnsMove = (e, arr, color) => {
                         }
 
                     }
-}
-                 else {
+                } else {
                     console.log('on')
                     if (!arr[i][x].classList[2]) {
                         if (i === 6) {
@@ -265,12 +310,18 @@ const pawnsMove = (e, arr, color) => {
                                     .classList
                                     .add("marked-empty")
                             }
-                            if (arr[i - 1][x + 1].firstChild && arr[i - 1][x + 1].firstChild.classList[2] === 'black') {
+                            if (
+                                arr[i - 1][x + 1]
+                                    ?.firstChild && arr[i - 1][x + 1].firstChild.classList[2] === 'black'
+                            ) {
                                 arr[i - 1][x + 1]
                                     .classList
                                     .add("marked-enemy");
                             }
-                            if (arr[i - 1][x - 1].firstChild && arr[i - 1][x - 1].firstChild.classList[2] === 'black') {
+                            if (
+                                arr[i - 1][x - 1]
+                                    ?.firstChild && arr[i - 1][x - 1].firstChild.classList[2] === 'black'
+                            ) {
                                 arr[i - 1][x - 1]
                                     .classList
                                     .add("marked-enemy")
@@ -287,14 +338,20 @@ const pawnsMove = (e, arr, color) => {
                                     .classList
                                     .add("marked-empty")
                             }
-                            if (arr[i - 1][x - 1].firstChild) {
+                            if (
+                                arr[i - 1][x - 1]
+                                    ?.firstChild
+                            ) {
                                 if (arr[i - 1][x - 1].firstChild.classList[2] === 'black') {
                                     arr[i - 1][x - 1]
                                         .classList
                                         .add("marked-enemy")
                                 }
                             }
-                            if (arr[i - 1][x + 1].firstChild) {
+                            if (
+                                arr[i - 1][x + 1]
+                                    ?.firstChild
+                            ) {
                                 if (arr[i - 1][x + 1].firstChild.classList[2] === 'black') {
                                     arr[i - 1][x + 1]
                                         .classList
@@ -317,71 +374,130 @@ const rookMove = (e) => {
     classRemover()
     for (let i = 0; i < 8; i++) {
         for (let x = 0; x < 8; x++) {
-            if (arr[i][x] === e.parentNode) {
 
-                if (e.classList[2] === 'black') {
-                    // arr[x][i].classList.add('marked')  this is adding the class to the wrong
-                    // element
-                    console.log(arr[x][i])
-                    for (let y = i; y < 8; y++) {
-                        if (!arr[y][x].firstChild) {
-                            arr[y][x]
-                                .classList
-                                .add('marked-empty')
-                        } else if (arr[y][x].firstChild.classList[2] === 'white') {
-                            arr[y][x]
-                                .classList
-                                .add('marked-enemy')
-                            break
-                        }
-                        // else if (arr[y+1][x].firstChild.classList[2] === 'black') {  adding this code
-                        // stops the loop         break }
+            let current = e.parentNode == arr[i][x]
+                ? true
+                : false
+            let el = arr[i][x];
+            current && el
+                .classList
+                .add('marked')
+            let downTheBoard = current && countDown(i, 8)
+            let upTheBoard = current && countUp(i, 0)
+            let leftTheBoard = current && countUp(x, 0)
+            let rightTheBoard = current && countDown(x, 8)
+            if (current) {
+                addClassByColumn(downTheBoard, x, e.classList[2])
+                addClassByColumn(upTheBoard, x, e.classList[2])
+                addClassByRow(i, leftTheBoard, e.classList[2])
+                addClassByRow(i, rightTheBoard, e.classList[2])
+            }
 
-                    }
-                    for (let s = i; s > 0; s--) {
-                        if (!arr[s][x].firstChild) {
-                            arr[s][x]
-                                .classList
-                                .add('marked-empty')
-                        } else if (arr[s][x].firstChild.classList[2] === 'white') {
-                            arr[s][x]
-                                .classList
-                                .add('marked-enemy')
-                        }
-                    }
-                    for (let a = x; a > 0; a--) {
-                        if (!arr[i][a].firstChild) {
-                            arr[i][a]
-                                .classList
-                                .add('marked-empty')
-                        } else if (arr[i][a].firstChild.classList[2] === 'white') {
-                            arr[i][a]
-                                .classList
-                                .add('marked-enemy')
-                        }
-                    }
-                    for (let z = x; z < 8; z++) {
-                        if (!arr[i][z].firstChild) {
-                            arr[i][z]
-                                .classList
-                                .add('marked-empty')
-                        } else if (arr[i][z].firstChild.classList[2] === 'white') {
-                            arr[i][z]
-                                .classList
-                                .add('marked-enemy')
-                        }
-                    }
+        }
+    }
+}
+const countDown = (start, end) => {
+    let arr = [];
+    for (let i = start; i <= end; i++) {
+        arr.push(i)
+    }
+    return arr
+}
+const countUp = (start, end) => {
+
+    let arr = [];
+    if (start === 0) {
+        return arr
+    }
+    for (let i = start; i >= end; i--) {
+        arr.push(i)
+    }
+    return arr
+}
+const addClassByColumn = (column, row, color) => {
+
+    for (let i = column[1]; i < column.at(-1); i++) {
+        if (!arr[i][row].firstChild) {
+            arr[i][row]
+                .classList
+                .add('marked-empty')
+        } else if (arr[i][row].firstChild) {
+            //console.log(arr[i][row].classList[2])
+            classByColor(
+                color,
+                arr[i][row]?.firstChild.classList[2],
+                i,
+                row
+            )
+            break
+        } else {
+            break
+        }
+    }
+    if (column.length > 0) {
+        if (column[0] > column.at(-1)) {
+            for (let i = column[1]; i >= column.at(-1); i--) {
+                //console.log(i)
+                if (!arr[i][row].firstChild) {
+                    arr[i][row]
+                        .classList
+                        .add('marked-empty')
+                } else if (arr[i][row].firstChild) {
+                    classByColor(
+                        color,
+                        arr[i][row]?.firstChild.classList[2],
+                        i,
+                        row
+                    )
+                    break
+                } else {
+                    break
                 }
             }
         }
     }
 
-    // if(i === 0 ){     if(x === 7 ){         for(let y = 8 ; y > 0 ; y--){
-    // if(!arr[i][y].firstChild){                 arr[i][y].classList.add('marked')
-    // }             else if (arr[i][y].firstChild.classList[2] === 'white'){
-    // arr[i][y].classList.add('marked-enemy')             }         }     } }
 }
+const addClassByRow = (column, row, color) => {
+    for (let i = row[1]; i < row.at(-1); i++) {
+        if (!arr[column][i].firstChild) {
+            arr[column][i]
+                .classList
+                .add('marked-empty')
+        } else if (arr[i][row].firstChild) {
+            classByColor(
+                color,
+                arr[column][i]?.firstChild.classList[2],
+                column,
+                i
+            )
+            break
+        }
+    }
+    if (row.length > 0) {
+        if (row[0] > row.at(-1)) {
+            for (let i = row[1]; i >= row.at(-1); i--) {
+                //console.log(i)
+                if (!arr[column][i].firstChild) {
+                    arr[column][i]
+                        .classList
+                        .add('marked-empty')
+                } else if (arr[i][row].firstChild) {
 
+                    classByColor(
+                        color,
+                        arr[column][i]?.firstChild.classList[2],
+                        column,
+                        i
+                    )
+                    break
+                } else {
+                    break
+                }
+            }
+        }
+    }
+}
 const checkMarked = (e, arr) => {
     // console.log('on')
     const marked = [];
@@ -425,4 +541,15 @@ const classRemover = () => {
                 .remove("marked-enemy")
         }
     }
+}
+const classByColor = (currentColor, color, i, x) => {
+    console.log(currentColor, color)
+    if (currentColor === color) {
+        return
+    }
+
+    arr[i][x]
+        .classList
+        .add('marked-enemy')
+
 }
