@@ -386,11 +386,12 @@ const rookMove = (e) => {
             let upTheBoard = current && countUp(i, 0)
             let leftTheBoard = current && countUp(x, 0)
             let rightTheBoard = current && countDown(x, 8)
+            //console.log(rightTheBoard)
             if (current) {
                 addClassByColumn(downTheBoard, x, e.classList[2])
                 addClassByColumn(upTheBoard, x, e.classList[2])
                 addClassByRow(i, leftTheBoard, e.classList[2])
-                addClassByRow(i, rightTheBoard, e.classList[2])
+               addClassByRow(i, rightTheBoard, e.classList[2])
             }
 
         }
@@ -417,83 +418,115 @@ const countUp = (start, end) => {
 const addClassByColumn = (column, row, color) => {
 
     for (let i = column[1]; i < column.at(-1); i++) {
-        if (!arr[i][row].firstChild) {
+        //add avaliable squares at the bottum by calling a func and adding a class
+        if (!arr[i][row].firstChild) {  // if there's no piece on the square add a class
             arr[i][row]
                 .classList
                 .add('marked-empty')
-        } else if (arr[i][row].firstChild) {
+        }
+        
+        if (arr[i][row]?.firstChild.classList[2] !== color) {
             //console.log(arr[i][row].classList[2])
-            classByColor(
-                color,
-                arr[i][row]?.firstChild.classList[2],
-                i,
-                row
-            )
-            break
-        } else {
+            arr[i][row].classList.add('marked-enemy')
+            // classByColor(
+            //     color,
+            //     arr[i][row]?.firstChild.classList[2],
+            //     i,
+            //     row
+            // )
+            
+        } 
+        else{
             break
         }
+        
     }
+    //add avaliable squares at the top right by calling a func and adding a class
     if (column.length > 0) {
         if (column[0] > column.at(-1)) {
             for (let i = column[1]; i >= column.at(-1); i--) {
                 //console.log(i)
-                if (!arr[i][row].firstChild) {
+                if (!arr[i][row].firstChild) {  // if there's no piece on the square add a class
                     arr[i][row]
                         .classList
                         .add('marked-empty')
-                } else if (arr[i][row].firstChild) {
-                    classByColor(
-                        color,
-                        arr[i][row]?.firstChild.classList[2],
-                        i,
-                        row
-                    )
-                    break
-                } else {
+                } 
+                if(arr[i][row].firstChild){
+                    if(arr[i][row].firstChild){
+                     if (arr[i][row]?.firstChild.classList[2] !== color) {
+                    arr[i][row].classList.add('marked-enemy')
+                    // classByColor(
+                    //     color,
+                    //     arr[i][row]?.firstChild.classList[2],
+                    //     i,
+                    //     row
+                    // )
+                  
+                }
+                else {
                     break
                 }
+                }
+                }
+                
+               
+                
             }
         }
     }
 
 }
 const addClassByRow = (column, row, color) => {
+    //add avaliable squares to the right by calling a func and adding a class
     for (let i = row[1]; i < row.at(-1); i++) {
-        if (!arr[column][i].firstChild) {
+        if (!arr[column][i].firstChild) {  // if there's no piece on the square add a class
             arr[column][i]
                 .classList
                 .add('marked-empty')
-        } else if (arr[i][row].firstChild) {
-            classByColor(
-                color,
-                arr[column][i]?.firstChild.classList[2],
-                column,
-                i
-            )
-            break
         }
+        if(arr[i][row].firstChild){
+                if (arr[i][row]?.firstChild.classList[2] !== color) {
+            arr[i][row].classList.add('marked-enemy')
+            // classByColor(
+            //     color,
+            //     arr[column][i]?.firstChild.classList[2],
+            //     column,
+            //     i
+            // )
+           
+        }  else{break}  
+        }
+         
+        
+        
     }
-    if (row.length > 0) {
-        if (row[0] > row.at(-1)) {
+    //add avaliable squares to the left by calling a func and adding a class
+    if (row.length > 0) { 
+        if (row[0] > row.at(-1)) { 
+            //console.log(row[0] , row.at(-1))
             for (let i = row[1]; i >= row.at(-1); i--) {
                 //console.log(i)
-                if (!arr[column][i].firstChild) {
+                if (!arr[column][i].firstChild) {   // if there's no piece on the square add a class
                     arr[column][i]
                         .classList
                         .add('marked-empty')
-                } else if (arr[i][row].firstChild) {
-
-                    classByColor(
-                        color,
-                        arr[column][i]?.firstChild.classList[2],
-                        column,
-                        i
-                    )
-                    break
-                } else {
-                    break
                 }
+                if(arr[i][row].firstChild){
+                    if (arr[i][row]?.firstChild.classList[2] !== color) {
+
+                    arr[i][row].classList.add('marked-enemy')
+                    // classByColor(
+                    //     color,
+                    //     arr[column][i]?.firstChild.classList[2],
+                    //     column,
+                    //     i
+                    // )
+                   
+                } else{break}
+                }
+                
+               
+                 
             }
         }
     }
@@ -542,14 +575,19 @@ const classRemover = () => {
         }
     }
 }
-const classByColor = (currentColor, color, i, x) => {
-    console.log(currentColor, color)
-    if (currentColor === color) {
-        return
-    }
+// const classByColor = (currentColor, color, i, x) => {
+//     //console.log(currentColor, color)
+//     if (currentColor === color) {
+//         return
+//     }
 
-    arr[i][x]
-        .classList
-        .add('marked-enemy')
+//     arr[i][x]
+//         .classList
+//         .add('marked-enemy')
+
+// }
+const classColorRow = (currentColor, color,row,column) => {
+    if(currentColor === color){return}
+    console.log(currentColor, color)
 
 }
