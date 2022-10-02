@@ -27,7 +27,7 @@ let arr = s.map((el, i) => {
 
     return [...document.querySelectorAll(`.row-${i}`)]
 })
-// set color 
+// set color
 for (let i = 0; i < arr.length; i++) {
     for (let x = 0; x < arr[i].length; x++) {
         if (i % 2 > 0) {
@@ -48,8 +48,7 @@ for (let i = 0; i < arr.length; i++) {
 
 }
 
-//console.log(arr);
-// collection of pieces color , type and links to images
+//console.log(arr); collection of pieces color , type and links to images
 const boardPieces = [
     {
         code: 0,
@@ -142,7 +141,7 @@ const setPieces = (row, color, index, pieceIndex, className) => {
     img.setAttribute('class', `piece ${className} ${color}`)
     row[index].append(img)
 }
-// a callback to set the inetial board 
+// a callback to set the inetial board
 const firstBoard = [
     [
         arr[0], 'black', 3, 0, 'king'
@@ -211,7 +210,7 @@ board.addEventListener('click', (e) => {
         //console.log(current.classList[2])
     }
     if (current.classList[1] === 'rook') {
-        rookMove(current)
+        rookMove(current, arr, current.classList[2])
         //console.log(current.classList[2])
     }
 
@@ -219,16 +218,15 @@ board.addEventListener('click', (e) => {
 
 const pawnsMove = (e, arr, color) => {
     classRemover()
-       for (let i = 0; i < 8; i++) { // enter rows
+    for (let i = 0; i < 8; i++) { // enter rows
         for (let x = 0; x < 8; x++) { // enter columns
             if (arr[i][x] === e.parentNode) {
-                if(color === 'black'){
-                    addSelectedClass(arr,i,x,color)
-                    twoMovesBlack(arr,i,x,color)
-                }
-                else{
-                    addSelectedClass(arr,i,x,color)
-                    twoMovesWhite(arr,i,x,color) 
+                if (color === 'black') {
+                    addSelectedClass(arr, i, x, color)
+                    twoMovesBlack(arr, i, x, color)
+                } else {
+                    addSelectedClass(arr, i, x, color)
+                    twoMovesWhite(arr, i, x, color)
                 }
             }
         }
@@ -236,30 +234,17 @@ const pawnsMove = (e, arr, color) => {
 
 }
 
-const rookMove = (e) => {
+const rookMove = (e, arr, color) => {
     classRemover()
     for (let i = 0; i < 8; i++) {
         for (let x = 0; x < 8; x++) {
-
-            let current = e.parentNode == arr[i][x]
-                ? true
-                : false
-            let el = arr[i][x];
-            current && el
-                .classList
-                .add('marked')
-            let downTheBoard = current && countDown(i, 8)
-            let upTheBoard = current && countUp(i, 0)
-            let leftTheBoard = current && countUp(x, 0)
-            let rightTheBoard = current && countDown(x, 8)
-            //console.log(rightTheBoard)
-            if (current) {
-                addClassByColumn(downTheBoard, x, e.classList[2])
-                addClassByColumn(upTheBoard, x, e.classList[2])
-                addClassByRow(i, leftTheBoard, e.classList[2])
-               addClassByRow(i, rightTheBoard, e.classList[2])
+            if (arr[i][x] === e.parentNode) {
+                addSelectedClass(arr, i, x, color)
+                verticalMoves(arr, i, x, color)
+                horizontalMoves(arr, i, x, color)
+                verticalTargets(arr,i,x,color)
+                horizintalTargets(arr,i,x,color)
             }
-
         }
     }
 }
@@ -281,123 +266,9 @@ const countUp = (start, end) => {
     }
     return arr
 }
-const addClassByColumn = (column, row, color) => {
 
-    for (let i = column[1]; i < column.at(-1); i++) {
-        //add avaliable squares at the bottum by calling a func and adding a class
-        if (!arr[i][row].firstChild) {  // if there's no piece on the square add a class
-            arr[i][row]
-                .classList
-                .add('marked-empty')
-        }
-        
-        if (arr[i][row]?.firstChild.classList[2] !== color) {
-            //console.log(arr[i][row].classList[2])
-            arr[i][row].classList.add('marked-enemy')
-            classByColor(
-                color,
-                arr[i][row]?.firstChild.classList[2],
-                i,
-                row
-            )
-            
-        } 
-        else{
-            break
-        }
-        
-    }
-    //add avaliable squares at the top right by calling a func and adding a class
-    if (column.length > 0) {
-        if (column[0] > column.at(-1)) {
-            for (let i = column[1]; i >= column.at(-1); i--) {
-                //console.log(i)
-                if (!arr[i][row].firstChild) {  // if there's no piece on the square add a class
-                    arr[i][row]
-                        .classList
-                        .add('marked-empty')
-                } 
-                if(arr[i][row].firstChild){
-                    if(arr[i][row].firstChild){
-                     if (arr[i][row]?.firstChild.classList[2] !== color) {
-                    arr[i][row].classList.add('marked-enemy')
-                    classByColor(
-                        color,
-                        arr[i][row]?.firstChild.classList[2],
-                        i,
-                        row
-                    )
-                  
-                }
-                else {
-                    break
-                }
-                }
-                }
-                
-               
-                
-            }
-        }
-    }
-
-}
-const addClassByRow = (column, row, color) => {
-    //add avaliable squares to the right by calling a func and adding a class
-    for (let i = row[1]; i < row.at(-1); i++) {
-        if (!arr[column][i].firstChild) {  // if there's no piece on the square add a class
-            arr[column][i]
-                .classList
-                .add('marked-empty')
-        }
-        if(arr[i][row].firstChild){
-                if (arr[i][row]?.firstChild.classList[2] !== color) {
-            arr[i][row].classList.add('marked-enemy')
-            classByColor(
-                color,
-                arr[column][i]?.firstChild.classList[2],
-                column,
-                i
-            )
-           
-        }  else{break}  
-        }
-         
-        
-        
-    }
-    //add avaliable squares to the left by calling a func and adding a class
-    if (row.length > 0) { 
-        if (row[0] > row.at(-1)) { 
-            //console.log(row[0] , row.at(-1))
-            for (let i = row[1]; i >= row.at(-1); i--) {
-                //console.log(i)
-                if (!arr[column][i].firstChild) {   // if there's no piece on the square add a class
-                    arr[column][i]
-                        .classList
-                        .add('marked-empty')
-                }
-                if(arr[i][row].firstChild){
-                    if (arr[i][row]?.firstChild.classList[2] !== color) {
-
-                    arr[i][row].classList.add('marked-enemy')
-                    classByColor(
-                        color,
-                        arr[column][i]?.firstChild.classList[2],
-                        column,
-                        i
-                    )
-                   
-                } else{break}
-                }
-                
-               
-                 
-            }
-        }
-    }
-}
 const checkMarked = (e, arr) => {
+   
     // console.log('on')
     const marked = [];
     for (let i = 0; i < 8; i++) {
@@ -424,6 +295,7 @@ const checkMarked = (e, arr) => {
                 .remove('marked')
         }
     }
+    classRemover()
 
 }
 const classRemover = () => {
@@ -441,67 +313,196 @@ const classRemover = () => {
         }
     }
 }
-const classByColor = (currentColor, color, i, x) => {
-    //console.log(currentColor, color)
-    if (currentColor === color) {
-        return
-    }
 
-    arr[i][x]
+const addSelectedClass = (board, x, y) => {
+    board[x][y]
         .classList
-        .add('marked-enemy')
-
-}
-// const classColorRow = (currentColor, color,row,column) => {
-//     if(currentColor === color){return}
-//     console.log(currentColor, color)
-
-// }
-
-const addSelectedClass = (board,x,y) => {
-    board[x][y].classList.add('marked')
+        .add('marked')
 }
 // pawns allowed movments
-const twoMovesBlack = (board,row,col,color) => {
-    !board[row+1][col].firstChild && board[row+1][col].classList.add("marked-empty");
-    if(row === 1 && !board[row+1][col].firstChild){
-       !board[row+2][col].firstChild && board[row+2][col].classList.add("marked-empty"); 
+const twoMovesBlack = (board, row, col, color) => {
+    !board[row + 1][col].firstChild && board[row + 1][col]
+        .classList
+        .add("marked-empty");
+    if (row === 1 && !board[row + 1][col].firstChild) {
+        !board[row + 2][col].firstChild && board[row + 2][col]
+            .classList
+            .add("marked-empty");
     }
-    blackPawnTargets(board,row,col,color)
+    blackPawnTargets(board, row, col, color)
 }
-const twoMovesWhite = (board,row,col,color) => {
-    !board[row-1][col].firstChild && board[row-1][col].classList.add("marked-empty");
-    if(row === 6 && !board[row-1][col].firstChild){
-      !board[row-2][col].firstChild && board[row-2][col].classList.add("marked-empty");  
+const twoMovesWhite = (board, row, col, color) => {
+    !board[row - 1][col].firstChild && board[row - 1][col]
+        .classList
+        .add("marked-empty");
+    if (row === 6 && !board[row - 1][col].firstChild) {
+        !board[row - 2][col].firstChild && board[row - 2][col]
+            .classList
+            .add("marked-empty");
     }
-    whitePawnTargets(board,row,col,color)
+    whitePawnTargets(board, row, col, color)
 }
-const blackPawnTargets = (board,row,col,color) => {
-    if( board[row+1][col+1]?.firstChild){
-        if(board[row+1][col+1].firstChild.classList[2] != color){
-           board[row+1][col+1].classList.add('marked-enemy'); 
+const blackPawnTargets = (board, row, col, color) => {
+    if (
+        board[row + 1][col + 1]
+            ?.firstChild
+    ) {
+        if (board[row + 1][col + 1].firstChild.classList[2] != color) {
+            board[row + 1][col + 1]
+                .classList
+                .add('marked-enemy');
         }
     }
-    if(board[row+1][col-1]?.firstChild){
-        if(board[row+1][col-1]?.firstChild.classList[2] != color){
-            board[row+1][col-1].classList.add('marked-enemy');
+    if (
+        board[row + 1][col - 1]
+            ?.firstChild
+    ) {
+        if (
+            board[row + 1][col - 1]
+                ?.firstChild.classList[2] != color
+        ) {
+            board[row + 1][col - 1]
+                .classList
+                .add('marked-enemy');
         }
     }
-    
-    console.log(board[row+1][col+1].firstChild.classList[2])
+
+    //console.log(board[row + 1][col + 1].firstChild.classList[2])
 }
-const whitePawnTargets = (board,row,col,color) => {
-    if( board[row-1][col-1]?.firstChild){
-        if(board[row-1][col-1].firstChild.classList[2] != color){
-           board[row-1][col-1].classList.add('marked-enemy'); 
+const whitePawnTargets = (board, row, col, color) => {
+    if (
+        board[row - 1][col - 1]
+            ?.firstChild
+    ) {
+        if (board[row - 1][col - 1].firstChild.classList[2] != color) {
+            board[row - 1][col - 1]
+                .classList
+                .add('marked-enemy');
         }
     }
-    if(board[row-1][col+1]?.firstChild){
-        if(board[row-1][col+1]?.firstChild.classList[2] != color){
-            board[row-1][col+1].classList.add('marked-enemy');
+    if (
+        board[row - 1][col + 1]
+            ?.firstChild
+    ) {
+        if (
+            board[row - 1][col + 1]
+                ?.firstChild.classList[2] != color
+        ) {
+            board[row - 1][col + 1]
+                .classList
+                .add('marked-enemy');
         }
     }
-    // board[row-1][col-1]?.firstChild && board[row-1][col-1].classList.add('marked-enemy');
-    // board[row-1][col+1]?.firstChild && board[row-1][col+1].classList.add('marked-enemy');
+}
+
+// rook allowed moves
+
+const verticalMoves = (board, row, col, color) => {
+    //console.log(row,col)
+    for (let i = row + 1; i < 8; i++) {
+        //console.log(board[row][col])
+        if (!board[i][col].firstChild) {
+            //console.log(i)
+            board[i][col]
+                .classList
+                .add("marked-empty");
+        } 
+        else{break}
+
+    }
+    for (let i = row - 1; i >= 0; i--) {
+
+        if (!board[i][col].firstChild) { //console.log(i)
+            board[i][col]
+                .classList
+                .add("marked-empty");
+        } 
+        else{break}
+    }
+}
+
+const horizontalMoves = (board, row, col, color) => {
+    //console.log(row,col)
+    for (let i = col + 1; i < 8; i++) {
+        //console.log(board[row][col])
+        if (!board[row][i].firstChild) {
+            //console.log(i)
+            board[row][i]
+                .classList
+                .add("marked-empty");
+        } 
+        else{break}
+
+    }
+    for (let i = col - 1; i >= 0; i--) {
+
+        if (!board[row][i].firstChild) { //console.log(i)
+            board[row][i]
+                .classList
+                .add("marked-empty");
+        } 
+        else{break}
+
+    }
+}
+
+// rook targets
+
+const verticalTargets = (board,row,col,color) => {
+    for(let i = row+1; i < 8; i++){
+        if(board[i][col].firstChild){
+            //console.log('true1',row,col,i)
+            if(board[i][col].firstChild.classList[2] !== color){
+                console.log('true1 color',board[i][col].firstChild.classList[2])
+                board[i][col]
+                .classList
+                .add("marked-enemy"); 
+                 
+            }break;
+        }
+        
+    }
+    for(let i = row-1; i > 0; i--){
+        if(board[i][col].firstChild){
+            //console.log('true2',row,col,i)
+            if(board[i][col].firstChild.classList[2] !== color){
+                console.log('true2 color',board[i][col].firstChild.classList[2])
+                board[i][col]
+                .classList
+                .add("marked-enemy"); 
+                 
+            }break;
+        }
+        
+    }
+}
+
+const horizintalTargets = (board,row,col,color) => {
+    for(let i = col+1; i < 8; i++){
+        if(board[row][i].firstChild){
+            //console.log('true1',row,col,i)
+            if(board[row][i].firstChild.classList[2] !== color){
+                console.log('true1 color',board[row][i].firstChild.classList[2])
+                board[row][i]
+                .classList
+                .add("marked-enemy"); 
+                 
+            }break;
+        }
+        
+    }
+    for(let i = col-1; i >= 0; i--){
+        if(board[row][i].firstChild){
+            //console.log('true2',row,col,i)
+            if(board[row][i].firstChild.classList[2] !== color){
+                console.log('true2 color',board[row][i].firstChild.classList[2])
+                board[row][i]
+                .classList
+                .add("marked-enemy"); 
+                 
+            }break;
+        }
+        
+    }
 }
 
