@@ -198,11 +198,17 @@ firstBoard.forEach(el => {
 
 board.addEventListener('click', (e) => {
     let current = e.target;
+    //console.log(current)
     if (current.classList[2] == "marked-empty") {
         moveToMarkedEmpty(current, arr)
 
     }
-    switch (current.classList[1]) {
+    // if (current.parentNode.classList[2] == "marked-enemy") {
+    //     moveToMarkedEnemy(current, arr)
+
+    // }
+    if(!current.parentNode.classList[2]){
+        switch (current.classList[1]) {
         case 'pawn':
             pawnsMove(current, arr, current.classList[2])
             break;
@@ -218,10 +224,16 @@ board.addEventListener('click', (e) => {
         case 'queen':
             queenMove(current, arr, current.classList[2])
             break;
+        case 'king':
+            kingMove(current, arr, current.classList[2])
+            break;
         default:
             classRemover()
             break;
     }
+        //console.log(current.parentNode.classList)
+    }
+    
 })
 
 const pawnsMove = (e, arr, color) => {
@@ -300,6 +312,19 @@ const queenMove = (e, arr, color) => {
     }
 }
 
+const kingMove = (e, arr, color) => {
+    classRemover()
+    for (let i = 0; i < 8; i++) {
+        for (let x = 0; x < 8; x++) {
+            if (arr[i][x] === e.parentNode) {
+                kingAllowedSquares(arr, i, x, color)
+                addSelectedClass(arr, i, x, color)
+                kingTargets(arr, i, x, color)
+            }
+        }
+    }
+}
+
 const countDown = (start, end) => {
     let arr = [];
     for (let i = start; i <= end; i++) {
@@ -347,6 +372,25 @@ const moveToMarkedEmpty = (e, arr) => {
     classRemover()
 
 }
+
+// const moveToMarkedEnemy = (e, board) => {
+     
+//     const current = [];
+//     const parent = e.parentNode;
+//     for (let i = 0; i < 8; i++) {
+//         for (let x = 0; x < 8; x++) {
+//             if (arr[i][x].firstChild) {
+//                 if(arr[i][x].classList[2] === "marked"){
+//                     current.push(arr[i][x])
+//                 }
+//             }}}
+//     parent.append(...current)
+//     parent.removeChild(e)
+           
+//      console.log(current)
+//     //        classRemover()
+// }
+
 const classRemover = () => {
     for (let i = 0; i < 8; i++) { // enter rows
         for (let x = 0; x < 8; x++) {
@@ -501,7 +545,7 @@ const verticalTargets = (board, row, col, color) => {
     for (let i = row + 1; i < 8; i++) {
         if (board[i][col].firstChild) {
             if (board[i][col].firstChild.classList[2] !== color) {
-                console.log('true1 color', board[i][col].firstChild.classList[2])
+                
                 board[i][col]
                     .classList
                     .add("marked-enemy");
@@ -531,7 +575,7 @@ const horizintalTargets = (board, row, col, color) => {
     for (let i = col + 1; i < 8; i++) {
         if (board[row][i].firstChild) {
             if (board[row][i].firstChild.classList[2] !== color) {
-                console.log('true1 color', board[row][i].firstChild.classList[2])
+                
                 board[row][i]
                     .classList
                     .add("marked-enemy");
@@ -545,7 +589,7 @@ const horizintalTargets = (board, row, col, color) => {
         if (board[row][i].firstChild) {
             //console.log('true2',row,col,i)
             if (board[row][i].firstChild.classList[2] !== color) {
-                console.log('true2 color', board[row][i].firstChild.classList[2])
+                
                 board[row][i]
                     .classList
                     .add("marked-enemy");
@@ -853,4 +897,122 @@ const diagonaTargets = (board, row, col, color) => {
                 }
             }
     }
+}
+
+// king allowed moves
+
+const kingAllowedSquares = (board, row, col, color) =>{
+    let kingSquares = [];
+    let blackPieces = [];
+    let whitePieces = [];
+   
+    if(row > 0 && col > 0){
+        !board[row-1][col-1].firstChild && kingSquares.push(board[row-1][col-1])
+        !board[row-1][col].firstChild && kingSquares.push(board[row-1][col])
+    }
+    if(row > 0 && col < 7){
+        !board[row-1][col+1].firstChild && kingSquares.push(board[row-1][col+1])
+    }
+    if(col < 7){
+        !board[row][col+1].firstChild && kingSquares.push(board[row][col+1])
+    }
+    if(col > 0){
+        !board[row][col-1].firstChild && kingSquares.push(board[row][col-1])
+    }
+    if(row < 7 && col > 0){
+        !board[row+1][col-1].firstChild && kingSquares.push(board[row+1][col-1])
+        !board[row+1][col].firstChild && kingSquares.push(board[row+1][col])
+        !board[row+1][col+1].firstChild && kingSquares.push(board[row+1][col+1])
+    }
+
+    if(color === 'white' && kingSquares.length){
+        for(let i = 0; i < 8; i++){
+            for(let x = 0; x < 8; x++){
+                if(board[i][x]?.firstChild){
+                    if(board[i][x]?.firstChild.classList[2] !== color){
+                       blackPieces.push(board[i][x]) 
+                    }
+                    
+                }//console.log(blackPieces)
+            }
+        }
+    }
+    if(color === 'black' && kingSquares.length){
+        for(let i = 0; i < 8; i++){
+            for(let x = 0; x < 8; x++){
+                if(board[i][x]?.firstChild){
+                    if(board[i][x]?.firstChild.classList[2] !== color){
+                       whitePieces.push(board[i][x]) 
+                    }
+                    
+                }//console.log(whitePieces)
+            }
+        }
+    }
+    if(kingSquares.length){
+        let enemyPieces = whitePieces.length ? whitePieces : blackPieces ;
+        //console.log(enemyPieces[1].firstChild.classList)
+        for (let i = 0; i < enemyPieces.length; i++){
+            let current = enemyPieces[i].firstChild
+            switch (current.classList[1]) {
+                case 'pawn':
+                    pawnsMove(current, board, color)
+                    break;
+                case 'rook':
+                    rookMove(current, board, color)
+                    break;
+                case 'knight':
+                    knightMove(current, board, color)
+                    break;
+                case 'bishop':
+                    bishopMove(current, board, color)
+                    break;
+                case 'queen':
+                    queenMove(current, board, color)
+                    break;
+                
+            }
+               
+        }
+    }
+    let newSquares = kingSquares.filter(el => !el.classList[2])
+    classRemover()
+   //bishopMove()
+    if(kingMove.length){
+        newSquares.forEach(el => {
+            el.classList.add('marked-empty')
+        })
+    }
+   //console.log(newSquares)
+   
+}
+
+const kingTargets = (board,row,col,color) => {
+    let kingSquares = [];
+    
+    if(row > 0 && col > 0){
+        board[row-1][col-1].firstChild && kingSquares.push(board[row-1][col-1])
+        board[row-1][col].firstChild && kingSquares.push(board[row-1][col])
+    }
+    if(row > 0 && col < 7){
+        board[row-1][col+1].firstChild && kingSquares.push(board[row-1][col+1])
+    }
+    if(col < 7){
+        board[row][col+1].firstChild && kingSquares.push(board[row][col+1])
+    }
+    if(col > 0){
+        board[row][col-1].firstChild && kingSquares.push(board[row][col-1])
+    }
+    if(row < 7 && col > 0){
+        board[row+1][col-1].firstChild && kingSquares.push(board[row+1][col-1])
+        board[row+1][col].firstChild && kingSquares.push(board[row+1][col])
+        board[row+1][col+1].firstChild && kingSquares.push(board[row+1][col+1])
+    }
+    kingSquares = kingSquares.filter(el => {
+        return el.firstChild.classList[2] !== color 
+    })
+    if(kingSquares.length){
+        kingSquares.forEach(el => el.classList.add('marked-enemy'))
+    }
+    //console.log(kingSquares)
 }
