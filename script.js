@@ -203,11 +203,12 @@ board.addEventListener('click', (e) => {
         moveToMarkedEmpty(current, arr)
 
     }
-    // if (current.parentNode.classList[2] == "marked-enemy") {
-    //     moveToMarkedEnemy(current, arr)
+    if (current.parentNode.classList[2] == "marked-enemy") {
+        moveToMarkedEnemy(current, arr)
 
-    // }
-    if(!current.parentNode.classList[2]){
+    }
+    if(current.parentNode){
+        if(!current.parentNode.classList[2]){
         switch (current.classList[1]) {
         case 'pawn':
             pawnsMove(current, arr, current.classList[2])
@@ -233,6 +234,8 @@ board.addEventListener('click', (e) => {
     }
         //console.log(current.parentNode.classList)
     }
+    }
+    
     
 })
 
@@ -373,23 +376,23 @@ const moveToMarkedEmpty = (e, arr) => {
 
 }
 
-// const moveToMarkedEnemy = (e, board) => {
+const moveToMarkedEnemy = (e, board) => {
      
-//     const current = [];
-//     const parent = e.parentNode;
-//     for (let i = 0; i < 8; i++) {
-//         for (let x = 0; x < 8; x++) {
-//             if (arr[i][x].firstChild) {
-//                 if(arr[i][x].classList[2] === "marked"){
-//                     current.push(arr[i][x])
-//                 }
-//             }}}
-//     parent.append(...current)
-//     parent.removeChild(e)
+    const current = [];
+    const parent = e.parentNode;
+    for (let i = 0; i < 8; i++) {
+        for (let x = 0; x < 8; x++) {
+            if (arr[i][x].firstChild) {
+                if(arr[i][x].classList[2] === "marked"){
+                    current.push(arr[i][x].firstChild)
+                }
+            }}}
+    parent.append(...current)
+    parent.removeChild(e)
            
-//      console.log(current)
-//     //        classRemover()
-// }
+     console.log(current)
+           classRemover()
+}
 
 const classRemover = () => {
     for (let i = 0; i < 8; i++) { // enter rows
